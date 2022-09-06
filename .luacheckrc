@@ -3,9 +3,11 @@ unused_args = false
 max_line_length = 120
 
 stds.minetest = {
+	globals = {
+		"minetest",
+	},
 	read_globals = {
 		"DIR_DELIM",
-		"minetest",
 		"core",
 		"dump",
 		"vector",
@@ -28,7 +30,6 @@ stds.debuggery = {
 	read_globals = {
 		"areas",
 		"futil",
-		"minetest",
 		"worldedit",
 	},
 }

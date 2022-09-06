@@ -33,6 +33,7 @@ local function instrument(name, value, _cache)
         for k, v in pairs(value) do
             if type(k) == "string" then
                 t[k] = instrument(("%s.%s"):format(name, k), v, _cache)
+
             else
                 t[k] = instrument(("%s[%s]"):format(name, k), v, _cache)
             end

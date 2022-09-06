@@ -1,5 +1,8 @@
 # name of the priv needed to use commands. will be created if it doesn't exist.
 debuggery.admin_priv (admin priv) string server
 
+# how many us to consider an entity's on_step to be "laggy"
+debuggery.entity_lag_log_threshold (entity lag threshold) int 450000 0
+
 # interval between printing the instrumentation report to the log
 debuggery.instrumentation_report_interval (report interval) int 1 0
