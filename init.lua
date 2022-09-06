@@ -5,7 +5,7 @@ local S = minetest.get_translator(modname)
 debuggery = {
 	author = "flux",
 	license = "AGPL_v3",
-	version = {year = 2022, month = 9, day = 4},
+	version = {year = 2022, month = 9, day = 6},
 	fork = "flux",
 
 	modname = modname,

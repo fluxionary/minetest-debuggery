@@ -1,0 +1,5 @@
+# name of the priv needed to use commands. will be created if it doesn't exist.
+debuggery.admin_priv (admin priv) string server
+
+# interval between printing the instrumentation report to the log
+debuggery.instrumentation_report_interval (report interval) int 1 0
