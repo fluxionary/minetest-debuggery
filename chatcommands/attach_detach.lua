@@ -52,7 +52,7 @@ minetest.register_chatcommand("attach", {
 })
 
 minetest.register_chatcommand("detach", {
-	params = "<target1>",
+	params = "<target>",
 	description = "detaches something",
 	privs = {[debuggery.settings.admin_priv] = true},
 	func = function(name, target)

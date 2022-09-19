@@ -1,5 +1,5 @@
 minetest.register_chatcommand("rectify", {
-	description = "Sets pitch and yaw to (0, 0)",
+	description = "sets pitch and yaw to (0, 0)",
 	func = function(name)
 		local player = minetest.get_player_by_name(name)
 

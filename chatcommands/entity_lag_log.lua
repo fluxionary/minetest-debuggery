@@ -28,6 +28,7 @@ minetest.register_chatcommand("entity_lag_log_toggle", {
 		    for name, old_on_step in pairs(old_on_steps) do
 			    minetest.registered_entities[name].on_step = old_on_step
 		    end
+		    old_on_steps = nil
 
 	    else
 		    old_on_steps = {}
