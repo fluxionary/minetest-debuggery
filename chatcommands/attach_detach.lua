@@ -27,7 +27,7 @@ end
 
 minetest.register_chatcommand("attach", {
 	params = "<target1> to <target2>",
-	description = "finds luaentities attached to non-existent things",
+	description = "attaches two objects",
 	privs = {[debuggery.settings.admin_priv] = true},
 	func = function(name, target)
 		local target1, target2 = target:match("^%s*([^%s]+)%s+to%s+([^%s]+)%s*")
