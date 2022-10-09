@@ -2,7 +2,7 @@ local get_us_time = minetest.get_us_time
 local log = minetest.log
 local log_level = minetest.settings:get("debug_log_level") or "action"
 
-local pairs_by_key = futil.pairs_by_key
+local pairs_by_key = table.pairs_by_key
 
 local old_values = {}
 local total_elapsed = {}
