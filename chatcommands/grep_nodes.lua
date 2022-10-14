@@ -4,26 +4,8 @@ end
 
 local v_new = vector.new
 
-local function get_bounds(name)
-    local pos1, pos2
-    if debuggery.has.worldedit then
-        pos1 = worldedit.pos1[name]
-        pos2 = worldedit.pos2[name]
-    end
-
-    if not (pos1 and pos2) and debuggery.has.areas then
-        pos1 = areas.pos1[name]
-        pos2 = areas.pos2[name]
-    end
-
-    if pos1 and pos2 then
-        pos1.x, pos2.x = math.min(pos1.x, pos2.x), math.max(pos1.x, pos2.x)
-        pos1.y, pos2.y = math.min(pos1.y, pos2.y), math.max(pos1.y, pos2.y)
-        pos1.z, pos2.z = math.min(pos1.z, pos2.z), math.max(pos1.z, pos2.z)
-    end
-
-    return pos1, pos2
-end
+local table_is_empty = table.is_empty
+local get_bounds = debuggery.util.get_bounds
 
 local function get_names_by_id(pattern)
     local get_content_id = minetest.get_content_id
@@ -36,10 +18,6 @@ local function get_names_by_id(pattern)
     end
 
     return names_by_id
-end
-
-local function table_is_empty(t)
-	return not next(t)
 end
 
 local chunk_size = 16 * 16

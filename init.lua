@@ -28,4 +28,5 @@ debuggery = {
 
 debuggery.dofile("settings")
 debuggery.dofile("privs")
+debuggery.dofile("util")
 debuggery.dofile("chatcommands", "init")
