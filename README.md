@@ -56,9 +56,9 @@ dependencies:
   ```
 * `instrument_mod <global_name>`
 
-  recursively finds all functions inside a lua table available as `<global_name>`, and records information about how
-  often they are executed, and how long they take to run. most mods use their own name as the global value.
-  run the command again to turn the logging off. example output:
+  recursively finds all functions inside a lua table available as `<global_name>`, and records information about
+  how often they are executed, and how long they take to run. most mods use their own name as the global value.
+  run the command again to turn the logging off. output is to debug.txt. example output:
   ```
   22:04:06: in 4.4160022735596s,
   22:04:06: kitz.actfunc was called 9 times, used 224 us
@@ -79,21 +79,27 @@ dependencies:
 
 * `rectify`
 
-  sets pitch and yaw to (0, 0)
+  sets pitch (look_vertical) to 0 and yaw (look_horizontal) to 0.
+
 * `remove_entities <entity_name>`
 
-  remove all currently active entities w/ the given name
+  remove all currently active entities w/ the given name. does not affect unloaded entities.
+
 * `whatisthis`
 
-  get the full itemstring of wielded item
+  get the full itemstring of wielded item.
 
 * `/rollback_check [<seconds>] [<limit_per_node>] [<player>] [<node>]`
-  * note the initial slash - this does not override the builtin rollback command
-  * requires the same privilege(s) as `rollback_check`.
+  * note: the initial slash - this does not override the builtin rollback_check command
+  * note: requires the same privilege(s) as `rollback_check`.
+  * note: defaults: <seconds> = 1 year; limit_per_node = 5; player = .*; node = .*
 
-  checks a region defined via worldedit (`/1`, `/2`) or areas (`area_pos1`, `area_pos2`)
+  checks a region defined via worldedit (`/1`, `/2`) or areas (`area_pos1`, `area_pos2`).
 
 * `/rollback <seconds> <player>`
+  * note: the initial slash - this does not override the builtin rollback command
+  * note: requires the same privilege(s) as `rollback`.
+  * note: VERY SLOW AND DANGEROUS. BE CAREFUL. MAKE BACKUPS.
 
-  requires both arguments. reverts all changes by player in the region to the earliest change after
-  <seconds> seconds ago.
+  requires both arguments. reverts all changes by player in the region to what was there before the earliest
+  change after <seconds> seconds ago.
