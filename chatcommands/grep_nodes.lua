@@ -2,81 +2,51 @@ if not (debuggery.has.areas or debuggery.has.worldedit) then
     return
 end
 
-local v_new = vector.new
-
 local table_is_empty = table.is_empty
 local get_bounds = debuggery.util.get_bounds
 
-local function get_names_by_id(pattern)
+local split_region_by_mapblock = futil.split_region_by_mapblock
+
+local function build_name_by_id(pattern)
     local get_content_id = minetest.get_content_id
-    local names_by_id = {}
+    local name_by_id = {}
 
     for itemstring in pairs(minetest.registered_nodes) do
         if itemstring:match(pattern) then
-            names_by_id[get_content_id(itemstring)] = itemstring
+            name_by_id[get_content_id(itemstring)] = itemstring
         end
     end
 
-    return names_by_id
+    return name_by_id
 end
 
-local chunk_size = 16 * 16
-local function separate_by_mapchunk(pos1, pos2)
-    local chunks = {}
-    for x = pos1.x - (pos1.x % chunk_size), pos2.x - (pos2.x % chunk_size) + (chunk_size - 1), chunk_size do
-        for y = pos1.y - (pos1.y % chunk_size), pos2.y - (pos2.y % chunk_size) + (chunk_size - 1), chunk_size do
-            for z = pos1.z - (pos1.z % chunk_size), pos2.z - (pos2.z % chunk_size) + (chunk_size - 1), chunk_size do
-                table.insert(chunks, {
-                    v_new(math.max(pos1.x, x), math.max(pos1.y, y), math.max(pos1.z, z)),
-                    v_new(
-                        math.min(pos2.x, x + (chunk_size - 1)),
-                        math.min(pos2.y, y + (chunk_size - 1)),
-                        math.min(pos2.z, z + (chunk_size - 1))
-                    ),
-                })
-            end
-        end
-    end
-    return chunks
-end
-
-local function find_in_bounds(pos1, pos2, name, names_by_id, limit)
+local function find_in_bounds(pos1, pos2, player_name, names_by_id, limit)
     local vm = minetest.get_voxel_manip()
     local emerged_pos1, emerged_pos2 = vm:read_from_map(pos1, pos2)
     local area = VoxelArea:new({MinEdge=emerged_pos1, MaxEdge=emerged_pos2})
     local data = vm:get_data()
 
-    local found = 0
+    local count_found = 0
     for i in area:iterp(pos1, pos2) do
         local itemstring = names_by_id[data[i]]
         if itemstring then
             local pos = minetest.pos_to_string(area:position(i))
-            minetest.chat_send_player(name, ("[grep] %s @ %s"):format(itemstring, pos))
-            found = found + 1
-            if found == limit then
+            minetest.chat_send_player(player_name, ("[grep] %s @ %s"):format(itemstring, pos))
+            count_found = count_found + 1
+            if count_found == limit then
                 break
             end
         end
     end
 
-    return found
-end
-
-local function process_chunk(name, names_by_id, limit, chunks, chunk_index)
-    local pos1, pos2 = unpack(chunks[chunk_index])
-
-    local found = find_in_bounds(pos1, pos2, name, names_by_id, limit)
-    limit = limit - found
-    if limit > 0 and chunk_index < #chunks then
-        minetest.after(0, process_chunk, name, names_by_id, limit, chunks, chunk_index + 1)
-    end
+    return count_found
 end
 
 minetest.register_chatcommand("/grep_nodes", {
     params = "<limit> <pattern>",
     description = "Search for nodes",
     privs = {[debuggery.settings.admin_priv] = true},
-    func = function(name, params)
+    func = function(player_name, params)
         local start = minetest.get_us_time()
         local limit, pattern = params:match("^%s*(%d+)%s+(%S+)%s*")
         limit = tonumber(limit)
@@ -84,19 +54,28 @@ minetest.register_chatcommand("/grep_nodes", {
             return false, "Invalid arguments. See /help /grep_nodes"
         end
 
-        local pos1, pos2 = get_bounds(name)
+        local pos1, pos2 = get_bounds(player_name)
         if not (pos1 and pos2) then
             return false, "Please select an area using either areas or worldedit"
         end
 
-        local names_by_id = get_names_by_id(pattern)
+        local names_by_id = build_name_by_id(pattern)
         if table_is_empty(names_by_id) then
             return false, "Pattern doesn't match any nodes"
         end
 
-        local chunks = separate_by_mapchunk(pos1, pos2)
+        local chunks = split_region_by_mapblock(pos1, pos2, 16)
+		local count_found = 0
+		local queue = action_queues.api.create_serverstep_queue({num_per_step = 1})
+		for _, chunk in ipairs(chunks) do
+			queue:push_back(function()
+				count_found = count_found + find_in_bounds(chunk[1], chunk[2], player_name, names_by_id, limit)
 
-        minetest.after(0, process_chunk, name, names_by_id, limit, chunks, 1)
+				if count_found >= limit then
+					queue:clear()
+				end
+			end)
+		end
 
         local took = (minetest.get_us_time() - start) / 1e6
         return true, ("broke job into %s chunks, took %ss"):format(#chunks, took)

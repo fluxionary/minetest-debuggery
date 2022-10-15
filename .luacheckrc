@@ -28,6 +28,7 @@ stds.debuggery = {
 		"debuggery",
 	},
 	read_globals = {
+		"action_queues",
 		"areas",
 		"futil",
 		"worldedit",
