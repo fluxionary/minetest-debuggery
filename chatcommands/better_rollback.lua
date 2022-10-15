@@ -120,7 +120,7 @@ minetest.register_chatcommand("/rollback", {
 	description = "rollback actions by a specific player in region. warning: DANGEROUS.",
 	privs = rollback_privs,
 	func = function(name, params)
-		local minp, maxp = debuggery.util.get_bounds(name)
+		local minp, maxp = get_bounds(name)
 		if not (minp and maxp) then
             return false, "Please select an area using either areas or worldedit"
 		end
