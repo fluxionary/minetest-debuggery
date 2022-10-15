@@ -8,10 +8,15 @@ dependencies:
 # commands
 
 * `attach <target1> to <target2>`
+
   attaches two objects, which might be a player name or an entity name (a random entity of that type is chosen)
+
 * `detach <target>`
+
   detaches the target from its parent.
+
 * `count_objects`
+
   prints counts of all types of objects currently active.
   example output:
   ```
@@ -26,7 +31,9 @@ dependencies:
   ..............
   total = 18
   ```
+
 * `entity_lag_log_toggle`
+
   starts (or stops) a log of how much time entities are spending doing their `on_step` callback.
   example output:
   ```
@@ -34,7 +41,9 @@ dependencies:
   2022-09-03 16:03:51: petz:leopard @ (-297,48,854)'s on_step took 371364 us
   2022-09-03 16:03:52: petz:snow_leopard @ (-2811,74,2283)'s on_step took 377283 us
   ```
+
 * `/grep_nodes <limit> <pattern>`
+
   requires *either* worldedit or areas mod. allows you to search for nodes whose name matches `<pattern>` between
   either areas positions (`area_pos1`, `area_pos2`) or worldedit positions (`/1`, `/2`). searching a large area is
   broken up into discrete steps, so as not to cause a single huge lag spike. locations of nodes will be sent to
@@ -46,6 +55,7 @@ dependencies:
   pipeworks:deployer_off @ (-535,23,-274)
   ```
 * `instrument_mod <global_name>`
+
   recursively finds all functions inside a lua table available as `<global_name>`, and records information about how
   often they are executed, and how long they take to run. most mods use their own name as the global value.
   run the command again to turn the logging off. example output:
@@ -58,18 +68,32 @@ dependencies:
   22:04:06: kitz.get_box_height was called 66 times, used 642 us
   22:04:06: kitz.get_closest_entity was called 21 times, used 4062036 us
   ```
+
 * `memory`
+
   get lua's current memory usage (doesn't include memory managed by the c++ parts of the engine)
+
 * `memory_toggle`
+
   reports on the server's memory usage periodically.
+
 * `rectify`
+
   sets pitch and yaw to (0, 0)
 * `remove_entities <entity_name>`
+
   remove all currently active entities w/ the given name
 * `whatisthis`
+
   get the full itemstring of wielded item
-* `/rollback_check [<seconds>] [<limit_per_node>] [<player>]`
+
+* `/rollback_check [<seconds>] [<limit_per_node>] [<player>] [<node>]`
   * note the initial slash - this does not override the builtin rollback command
   * requires the same privilege(s) as `rollback_check`.
 
   checks a region defined via worldedit (`/1`, `/2`) or areas (`area_pos1`, `area_pos2`)
+
+* `/rollback <seconds> <player>`
+
+  requires both arguments. reverts all changes by player in the region to the earliest change after
+  <seconds> seconds ago.
