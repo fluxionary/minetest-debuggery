@@ -68,3 +68,7 @@ dependencies:
   remove all currently active entities w/ the given name
 * `whatisthis`
   get the full itemstring of wielded item
+* `/rollback_check [<seconds>] [<limit_per_node>] [<player>]`
+  * note the initial slash - this does not override the builtin rollback command
+  * requires the same privilege(s) as `rollback_check`, or `{rollback=true}` if that doesn't exist
+  checks a region defined via worldedit (`/1`, `/2`) or areas (`area_pos1`, `area_pos2`)
