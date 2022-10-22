@@ -1,3 +1,5 @@
+local pairs_by_key = futil.table.pairs_by_key
+
 local function count_object()
     local ret = {}
     local total = 0
@@ -17,7 +19,7 @@ local function count_object()
     local mod_total = 0
     local mod_items = 0
 
-    for name, count in table.pairs_by_key(ret) do
+    for name, count in pairs_by_key(ret) do
         local mod = name:match("^([^:]+):")
 
         if mod and previous_mod and mod ~= previous_mod then

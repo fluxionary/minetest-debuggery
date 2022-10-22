@@ -15,7 +15,7 @@ minetest.register_chatcommand("/rollback_check", {
             return false, "Please select an area using either areas or worldedit"
 		end
 
-		if vector.volume(minp, maxp) > (16 * 16 * 16 * 27) then
+		if futil.vector.volume(minp, maxp) > (16 * 16 * 16 * 27) then
 			return false, "this is a very expensive command, do not use on volumes larger than 3x3x3 mapblocks"
 		end
 
@@ -125,7 +125,7 @@ minetest.register_chatcommand("/rollback", {
             return false, "Please select an area using either areas or worldedit"
 		end
 
-		if vector.volume(minp, maxp) > (16 * 16 * 16 * 27) then
+		if futil.vector.volume(minp, maxp) > (16 * 16 * 16 * 27) then
 			return false, "this is a very expensive command, do not use on volumes larger than 3x3x3 mapblocks"
 		end
 

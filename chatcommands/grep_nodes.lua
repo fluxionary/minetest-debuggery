@@ -2,7 +2,7 @@ if not (debuggery.has.areas or debuggery.has.worldedit) then
     return
 end
 
-local table_is_empty = table.is_empty
+local table_is_empty = futil.table.is_empty
 local get_bounds = debuggery.util.get_bounds
 
 local split_region_by_mapblock = futil.split_region_by_mapblock
