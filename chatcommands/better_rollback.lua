@@ -1,5 +1,6 @@
 local get_bounds = debuggery.util.get_bounds
 
+local iso_date = futil.iso_date
 local iterate_area = futil.iterate_area
 
 local check_privs = (minetest.registered_chatcommands.rollback_check or {}).privs or {rollback = true}
@@ -30,11 +31,6 @@ minetest.register_chatcommand("/rollback_check", {
 		local player_name = args[3] and ("player:%s"):format(args[3])
 		local node_pattern = args[4]
 		local now = os.time()
-		local date = os.date
-
-		local function format_utc(timestamp)
-			return date('!%Y-%m-%d %H:%M:%S UTC', timestamp)
-		end
 
 		local function get_message(spos, action)
 			local actor = action.actor
@@ -64,7 +60,7 @@ minetest.register_chatcommand("/rollback_check", {
 				end
 
 				return f("%s %s %s %s (%s seconds ago)",
-					format_utc(action_time),
+					iso_date(action_time),
 					spos,
 					actor,
 					verb,
