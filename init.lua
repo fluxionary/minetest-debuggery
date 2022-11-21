@@ -15,7 +15,7 @@ debuggery = {
 
 	modname = modname,
 	modpath = modpath,
-	mod_storage = minetest.get_modstorage(),
+	mod_storage = minetest.get_mod_storage(),
 	S = S,
 
 	has = {
