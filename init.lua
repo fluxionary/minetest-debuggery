@@ -15,6 +15,7 @@ debuggery = {
 
 	modname = modname,
 	modpath = modpath,
+	mod_storage = minetest.get_modstorage(),
 	S = S,
 
 	has = {
@@ -35,3 +36,5 @@ debuggery.dofile("settings")
 debuggery.dofile("privs")
 debuggery.dofile("util")
 debuggery.dofile("chatcommands", "init")
+
+debuggery.mod_storage = nil

@@ -109,3 +109,9 @@ dependencies:
 
   makes extras of the item the player is wielded. for tools, the default is 1 (added to the players inventory),
   for non-tools, the default is the item's stack max size. exceeding the stack size is possible, up to 65535
+
+* `/sunlight [<target>] [<ratio>]`
+
+  sets the `day_night_ratio` of a target, or yourself if no target is specified.
+  1 = always day, 0 = always night. omitting the ratio will reset the default behavior.
+  this modifier will persist across logins and server restarts.
