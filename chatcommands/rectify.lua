@@ -10,21 +10,16 @@ minetest.register_chatcommand("rectify", {
 		if param == "e" or param == "east" then
 			player:set_look_vertical(0)
 			player:set_look_horizontal(-pi / 2)
-
 		elseif param == "s" or param == "south" then
 			player:set_look_vertical(0)
 			player:set_look_horizontal(pi)
-
 		elseif param == "w" or param == "west" then
 			player:set_look_vertical(0)
 			player:set_look_horizontal(pi / 2)
-
 		elseif param == "u" or param == "up" then
 			player:set_look_vertical(-pi / 2)
-
 		elseif param == "d" or param == "down" then
 			player:set_look_vertical(pi / 2)
-
 		else
 			player:set_look_vertical(0)
 			player:set_look_horizontal(0)

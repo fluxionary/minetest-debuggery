@@ -3,8 +3,8 @@ local get_bounds = debuggery.util.get_bounds
 local iso_date = futil.iso_date
 local iterate_area = futil.iterate_area
 
-local check_privs = (minetest.registered_chatcommands.rollback_check or {}).privs or {rollback = true}
-local rollback_privs = (minetest.registered_chatcommands.rollback or {}).privs or {rollback = true}
+local check_privs = (minetest.registered_chatcommands.rollback_check or {}).privs or { rollback = true }
+local rollback_privs = (minetest.registered_chatcommands.rollback or {}).privs or { rollback = true }
 
 minetest.register_chatcommand("/rollback_check", {
 	params = "[<seconds>] [<limit_per_node>] [<player>] [<node>]",
@@ -13,7 +13,7 @@ minetest.register_chatcommand("/rollback_check", {
 	func = function(name, params)
 		local minp, maxp = get_bounds(name)
 		if not (minp and maxp) then
-            return false, "Please select an area using either areas or worldedit"
+			return false, "Please select an area using either areas or worldedit"
 		end
 
 		if futil.vector.volume(minp, maxp) > (16 * 16 * 16 * 27) then
@@ -45,27 +45,22 @@ minetest.register_chatcommand("/rollback_check", {
 				local verb
 				if oldnode_name == "" and newnode_name == "" then
 					verb = "modified meta or inv"
-
 				elseif oldnode_name == "air" and newnode_name ~= "air" then
 					verb = ("placed %s:%i:%i"):format(newnode_name, newnode.param1, newnode.param2)
-
 				elseif oldnode_name ~= "air" and newnode_name == "air" then
 					verb = ("dug %s:%i:%i"):format(oldnode_name, oldnode.param1, oldnode.param2)
-
 				else
 					verb = ("replaced %s:%i:%i with %s:%i:%i"):format(
-						oldnode_name, oldnode.param1, oldnode.param2,
-						newnode_name, newnode.param1, newnode.param2
+						oldnode_name,
+						oldnode.param1,
+						oldnode.param2,
+						newnode_name,
+						newnode.param1,
+						newnode.param2
 					)
 				end
 
-				return f("%s %s %s %s (%s seconds ago)",
-					iso_date(action_time),
-					spos,
-					actor,
-					verb,
-					elapsed
-				)
+				return f("%s %s %s %s (%s seconds ago)", iso_date(action_time), spos, actor, verb, elapsed)
 			end
 
 			if player_name then
@@ -74,18 +69,15 @@ minetest.register_chatcommand("/rollback_check", {
 						if oldnode_name:match(node_pattern) or newnode.name:match(node_pattern) then
 							return build_message()
 						end
-
 					else
 						return build_message()
 					end
 				end
-
 			else
 				if node_pattern then
 					if oldnode_name:match(node_pattern) or newnode.name:match(node_pattern) then
 						return build_message()
 					end
-
 				else
 					return build_message()
 				end
@@ -118,7 +110,7 @@ minetest.register_chatcommand("/rollback", {
 	func = function(name, params)
 		local minp, maxp = get_bounds(name)
 		if not (minp and maxp) then
-            return false, "Please select an area using either areas or worldedit"
+			return false, "Please select an area using either areas or worldedit"
 		end
 
 		if futil.vector.volume(minp, maxp) > (16 * 16 * 16 * 27) then

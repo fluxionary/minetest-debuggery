@@ -12,8 +12,8 @@ function util.get_pos2(name)
 end
 
 function util.get_bounds(name)
-    local pos1 = util.get_pos1(name)
-    local pos2 = util.get_pos2(name)
+	local pos1 = util.get_pos1(name)
+	local pos2 = util.get_pos2(name)
 
 	if pos1 and pos2 then
 		return vector.sort(pos1, pos2)

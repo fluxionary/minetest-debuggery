@@ -19,7 +19,6 @@ local function resolve(target)
 
 	if target:match(":") then
 		return nil, ("uknown entity %q"):format(target)
-
 	else
 		return nil, ("player %q not connected"):format(target)
 	end
@@ -28,7 +27,7 @@ end
 minetest.register_chatcommand("attach", {
 	params = "<target1> to <target2>",
 	description = "attaches two objects",
-	privs = {[debuggery.settings.admin_priv] = true},
+	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, target)
 		local target1, target2 = target:match("^%s*([^%s]+)%s+to%s+([^%s]+)%s*")
 		if not (target1 and target2) then
@@ -44,17 +43,20 @@ minetest.register_chatcommand("attach", {
 
 		target1:set_attach(target2)
 
-		return true, ("attached %s @ %s to %s @ %s"):format(
-			name1, minetest.pos_to_string(vector.round(target1:get_pos())),
-			name2, minetest.pos_to_string(vector.round(target2:get_pos()))
-		)
+		return true,
+			("attached %s @ %s to %s @ %s"):format(
+				name1,
+				minetest.pos_to_string(vector.round(target1:get_pos())),
+				name2,
+				minetest.pos_to_string(vector.round(target2:get_pos()))
+			)
 	end,
 })
 
 minetest.register_chatcommand("detach", {
 	params = "<target>",
 	description = "detaches something",
-	privs = {[debuggery.settings.admin_priv] = true},
+	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, target)
 		local reason, name_
 		target, reason, name_ = resolve(target)

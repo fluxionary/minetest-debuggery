@@ -1,9 +1,7 @@
-
-
 minetest.register_chatcommand("remove_entities", {
 	params = "<entity name>",
 	description = "removes all entities of the specified type",
-	privs = {[debuggery.settings.admin_priv] = true},
+	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, entity_name)
 		entity_name = entity_name:match("^%s*(%S+)(%s*)$")
 		if not entity_name then

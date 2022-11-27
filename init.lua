@@ -3,14 +3,14 @@ local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
 assert(
-	type(futil.version) == "number" and futil.version >= os.time({year = 2022, month = 10, day = 24}),
+	type(futil.version) == "number" and futil.version >= os.time({ year = 2022, month = 10, day = 24 }),
 	"please update futil"
 )
 
 debuggery = {
 	author = "flux",
 	license = "AGPL_v3",
-	version = os.time({year = 2022, month = 10, day = 26}),
+	version = os.time({ year = 2022, month = 10, day = 26 }),
 	fork = "flux",
 
 	modname = modname,
@@ -28,7 +28,7 @@ debuggery = {
 	end,
 
 	dofile = function(...)
-		return dofile(table.concat({modpath, ...}, DIR_DELIM) .. ".lua")
+		return dofile(table.concat({ modpath, ... }, DIR_DELIM) .. ".lua")
 	end,
 }
 

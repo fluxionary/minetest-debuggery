@@ -1,23 +1,23 @@
 minetest.register_chatcommand("memory", {
-	description = "Get server\"s Lua memory usage",
-	privs = {[debuggery.settings.admin_priv] = true},
+	description = 'Get server"s Lua memory usage',
+	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, param)
 		minetest.chat_send_player(name, ("Lua is using %uMB out of 1024"):format(collectgarbage("count") / 1024))
-	end
+	end,
 })
 
 local registered = {}
 
 minetest.register_chatcommand("memory_toggle", {
-	description = "Get server\"s Lua memory usage periodically",
-	privs = {[debuggery.settings.admin_priv] = true},
+	description = 'Get server"s Lua memory usage periodically',
+	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, param)
 		if registered[name] then
 			registered[name] = nil
 		else
 			registered[name] = true
 		end
-	end
+	end,
 })
 
 local period = 1

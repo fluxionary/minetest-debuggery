@@ -4,7 +4,7 @@ local default_stack_max = tonumber(minetest.settings:get("default_stack_max")) o
 minetest.register_chatcommand("clone_wielded", {
 	params = "[<quantity>]",
 	description = "increases the stack size of the wielded item",
-	privs = {[debuggery.settings.admin_priv] = true},
+	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, count)
 		local player = minetest.get_player_by_name(name)
 		if not player then
@@ -39,18 +39,14 @@ minetest.register_chatcommand("clone_wielded", {
 			if created == count then
 				if count == 1 then
 					return true, f("added %q to inventory", wielded:to_string())
-
 				else
 					return true, f("added %s %qs to inventory", created, wielded:to_string())
 				end
-
 			elseif created == 0 then
 				return false, "no room in inventory"
-
 			else
 				return true, f("added %s %qs to inventory, then ran out of space", created, wielded:to_string())
 			end
-
 		else
 			local stack_max = wielded:get_stack_max()
 			if stack_max == 1 then
@@ -62,7 +58,6 @@ minetest.register_chatcommand("clone_wielded", {
 				wielded:set_count(count)
 				player:set_wielded_item(wielded)
 				return true, f("cloned %q", wielded:to_string())
-
 			else
 				return false, f("wielded stack is already larger")
 			end
