@@ -1,4 +1,5 @@
-local mod_storage = debuggery.mod_storage
+local private_state = ...
+local mod_storage = private_state.mod_storage
 
 local function get_key(player_name)
 	return ("sunlight:%s"):format(player_name)
