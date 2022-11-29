@@ -1,3 +1,4 @@
+-- luacheck: globals minetest.registered_entities
 local get_us_time = minetest.get_us_time
 local pos_to_string = minetest.pos_to_string
 local v_round = vector.round
