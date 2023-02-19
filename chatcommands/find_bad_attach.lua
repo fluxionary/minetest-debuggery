@@ -4,7 +4,7 @@ on IRC:
 <mazes_83> I got floods of: LuaEntitySAO::step() id=nnnn is attached to nonexistent parent. This is a bug.
 
 i wrote the following, but unfortunately the parent is cleared immediately after that log, in the c++ code.
-but keeping this cuz it might be usefor for something similar.
+but keeping this cuz it might be used for something similar.
 
 minetest.register_chatcommand("find_bad_attach", {
 	description = "finds luaentities attached to non-existent things",
