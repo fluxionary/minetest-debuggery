@@ -6,3 +6,8 @@ debuggery.entity_lag_log_threshold (entity lag threshold) int 450000 0
 
 # interval between printing the instrumentation report to the log
 debuggery.instrumentation_report_interval (report interval) int 1 0
+
+# list of mods to instrument on load. delimited by `string.split`
+debuggery.instrument_on_load (instrument mods on load) string
+
+debuggery.instrument_log_every_call () bool false

@@ -1,4 +1,4 @@
-futil.check_version({ year = 2022, month = 10, day = 24 })
+futil.check_version({ year = 2023, month = 3, day = 24 })
 
 debuggery = fmod.create()
 
