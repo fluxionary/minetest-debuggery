@@ -127,7 +127,7 @@ futil.register_globalstep({
 })
 
 minetest.register_on_mods_loaded(function()
-	local mods = s.instrument_on_load:split()
+	local mods = (s.instrument_on_load or ""):split()
 	for _, mod in ipairs(mods) do
 		if not (minetest.global_exists(mod) and _G[mod]) then
 			error(f("cannot instrument mod %q - it does not exist.", mod))
