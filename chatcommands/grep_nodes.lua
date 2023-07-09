@@ -20,18 +20,38 @@ local function build_name_by_id(pattern)
 	return name_by_id
 end
 
+local HUD_ELEM_LIMIT = 10000 -- this already makes my PC drop FPS, but still usable
+local huds = {}
+local huddef = {
+    hud_elem_type = "image_waypoint",
+    scale = {x=-4/16*9,y=-4},
+    text = "debuggery_dot.png",
+    world_pos = nil, -- to be filled inside the loop
+    offset = {x=0, y=0},
+    alignment = {x=0, y=0, z=0},
+}
+
 local function find_in_bounds(pos1, pos2, player_name, names_by_id, limit)
 	local vm = minetest.get_voxel_manip()
 	local emerged_pos1, emerged_pos2 = vm:read_from_map(pos1, pos2)
 	local area = VoxelArea:new({ MinEdge = emerged_pos1, MaxEdge = emerged_pos2 })
 	local data = vm:get_data()
 
+	local player = minetest.get_player_by_name(player_name)
+	local hud_list = huds[player_name] or {}
+	huds[player_name] = hud_list
+
 	local count_found = 0
 	for i in area:iterp(pos1, pos2) do
 		local itemstring = names_by_id[data[i]]
 		if itemstring then
-			local pos = minetest.pos_to_string(area:position(i))
-			minetest.chat_send_player(player_name, ("[grep] %s @ %s"):format(itemstring, pos))
+			local pos = area:position(i)
+			local pos_str = minetest.pos_to_string(pos)
+			minetest.chat_send_player(player_name, ("[grep] %s @ %s"):format(itemstring, pos_str))
+			if #hud_list < HUD_ELEM_LIMIT then
+                huddef.world_pos = pos
+				table.insert(hud_list, player:hud_add(huddef))
+			end
 			count_found = count_found + 1
 			if count_found == limit then
 				break
@@ -79,5 +99,20 @@ minetest.register_chatcommand("/grep_nodes", {
 
 		local took = (minetest.get_us_time() - start) / 1e6
 		return true, ("broke job into %s chunks, took %ss"):format(#chunks, took)
+	end,
+})
+
+minetest.register_chatcommand("/grep_clear", {
+	description = "Hide //grep_nodes markers.",
+	params = "none",
+	privs = { [debuggery.settings.admin_priv] = true },
+	func = function(name, param)
+		local player = minetest.get_player_by_name(name)
+		local hud_list = huds[name] or {}
+		for _,hud_id in pairs(hud_list) do
+			player:hud_remove(hud_id)
+		end
+        huds[name] = {}
+		return true, "Markers hidden"
 	end,
 })
