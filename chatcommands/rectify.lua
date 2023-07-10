@@ -1,7 +1,9 @@
 local pi = math.pi
 
+local S = debuggery.S
+
 minetest.register_chatcommand("rectify", {
-	description = "sets pitch and yaw to (0, 0)",
+	description = S("sets pitch and yaw to (0, 0)"),
 	func = function(name, param)
 		local player = minetest.get_player_by_name(name)
 

@@ -47,7 +47,7 @@ local function iterate_in_bounds(pos1, pos2, names_by_id, limit)
 end
 
 minetest.register_chatcommand("/grep_nodes", {
-	params = "<limit> <pattern>",
+	params = S("<limit> <pattern>"),
 	description = S("search for nodes"),
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(player_name, params)
@@ -61,6 +61,10 @@ minetest.register_chatcommand("/grep_nodes", {
 		local pos1, pos2 = get_bounds(player_name)
 		if not (pos1 and pos2) then
 			return false, S("please select an area using either areas or worldedit")
+		end
+
+		if not futil.is_valid_regex(pattern) then
+			return false, S("invalid filter, please supply a valid lua regular expression")
 		end
 
 		local names_by_id = build_name_by_id(pattern)
@@ -88,7 +92,7 @@ minetest.register_chatcommand("/grep_nodes", {
 		end
 
 		local elapsed = os.clock() - start
-		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", #chunks, elapsed)
+		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", tostring(#chunks), tostring(elapsed))
 	end,
 })
 
@@ -96,7 +100,7 @@ local hud_by_hpos_by_player_name = {}
 
 -- whosit deserves credit for the idea here
 minetest.register_chatcommand("/mark_nodes", {
-	params = "<limit> <pattern>",
+	params = S("<limit> <pattern>"),
 	description = S("highlight matching nodes via HUD waypoints"),
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(player_name, params)
@@ -116,6 +120,10 @@ minetest.register_chatcommand("/mark_nodes", {
 		local pos1, pos2 = get_bounds(player_name)
 		if not (pos1 and pos2) then
 			return false, S("please select an area using either areas or worldedit")
+		end
+
+		if not futil.is_valid_regex(pattern) then
+			return false, S("invalid filter, please supply a valid lua regular expression")
 		end
 
 		local names_by_id = build_name_by_id(pattern)
@@ -150,7 +158,7 @@ minetest.register_chatcommand("/mark_nodes", {
 		end
 
 		local elapsed = os.clock() - start
-		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", #chunks, elapsed)
+		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", tostring(#chunks), tostring(elapsed))
 	end,
 })
 

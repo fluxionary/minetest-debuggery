@@ -648,6 +648,9 @@ stds.minetest = {
 stds.debuggery = {
 	globals = {
 		"debuggery",
+		minetest = {fields = {
+			"registered_entities",
+		}},
 	},
 	read_globals = {
 		"action_queues",

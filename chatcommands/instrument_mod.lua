@@ -1,6 +1,7 @@
 local f = string.format
+local S = debuggery.S
 
-local get_us_time = minetest.get_us_time
+local clock = os.clock
 local log = minetest.log
 local log_level = minetest.settings:get("debug_log_level") or "action"
 
@@ -20,9 +21,9 @@ local function instrument(name, value, _cache)
 			if s.instrument_log_every_call then
 				debuggery.log("action", "%s(%s)", name, dump({ ... }))
 			end
-			local begin = get_us_time()
+			local begin = clock()
 			local rvs = { value(...) }
-			total_elapsed[name] = (total_elapsed[name] or 0) + get_us_time() - begin
+			total_elapsed[name] = (total_elapsed[name] or 0) + clock() - begin
 			total_calls[name] = (total_calls[name] or 0) + 1
 			if s.instrument_log_every_call then
 				debuggery.log("action", "%s(...) -> %s", name, dump(rvs))
@@ -70,8 +71,8 @@ local function uninstrument_mod(mod)
 end
 
 minetest.register_chatcommand("instrument_mod", {
-	params = "<global_name>",
-	description = "toggles recording timing data for all functions declared in a particular global",
+	params = S("<global_name>"),
+	description = S("toggles recording timing data for all functions declared in a particular global"),
 	privs = { [s.admin_priv] = true },
 	func = function(name, param)
 		if param == "" then
@@ -80,22 +81,22 @@ minetest.register_chatcommand("instrument_mod", {
 				table.insert(mods, mod)
 			end
 			if #mods == 0 then
-				return true, "no mods currently instrumented"
+				return true, S("no mods currently instrumented")
 			else
-				return true, "mods currently instrumented: " .. table.concat(mods, ", ")
+				return true, S("mods currently instrumented: @1", table.concat(mods, ", "))
 			end
 		end
 
 		if not (minetest.global_exists(param) and _G[param]) then
-			return false, f("unknown global %s", param)
+			return false, S("unknown global @1", param)
 		end
 
 		if old_values[param] then
 			uninstrument_mod(param)
-			return true, f("instrumentation disabled for %s", param)
+			return true, S("instrumentation disabled for @1", param)
 		else
 			instrument_mod(param)
-			return true, f("instrumentation enabled for %s", param)
+			return true, S("instrumentation enabled for @1", param)
 		end
 	end,
 })
@@ -108,7 +109,7 @@ futil.register_globalstep({
 		if num_instrumented == 0 then
 			return
 		end
-		local now = get_us_time()
+		local now = clock()
 		if last_call then
 			local elapsed = now - last_call
 			log(log_level, f("[instrument_mod] in %ss,", elapsed))

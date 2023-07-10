@@ -1,14 +1,16 @@
+local S = debuggery.S
+
 minetest.register_chatcommand("remove_entities", {
-	params = "<entity name>",
-	description = "removes all entities of the specified type",
+	params = S("<entity name>"),
+	description = S("removes all entities of the specified type"),
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, entity_name)
-		entity_name = entity_name:match("^%s*(%S+)(%s*)$")
+		entity_name = entity_name:match("^%s*(%S+)%s*$")
 		if not entity_name then
-			return false, "invalid arguments"
+			return false, S("invalid arguments")
 		end
 		if not minetest.registered_entities[entity_name] then
-			return false, ("unknown entity %q"):format(entity_name)
+			return false, S("unknown entity @1", entity_name)
 		end
 
 		local count = 0
@@ -19,6 +21,6 @@ minetest.register_chatcommand("remove_entities", {
 			end
 		end
 
-		return true, ("removed %s %ss"):format(count, entity_name)
+		return true, S("removed @1 @2s", tostring(count), entity_name)
 	end,
 })

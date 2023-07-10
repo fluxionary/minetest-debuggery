@@ -1,6 +1,8 @@
 local private_state = ...
 local mod_storage = private_state.mod_storage
 
+local S = debuggery.S
+
 local function get_key(player_name)
 	return ("sunlight:%s"):format(player_name)
 end
@@ -29,25 +31,23 @@ end
 
 minetest.register_chatcommand("sunlight", {
 	-- Give players with "settime" priv the ability to override their day-night ratio
-	params = "[<target>] [<ratio>]",
-	description = (
+	params = S("[<target>] [<ratio>]"),
+	description = S(
 		"Override day night ratio. (1 = always day, 0 = always night). "
-		.. "With no argument, reset the default behavior."
+			.. "With no argument, reset the default behavior."
 	),
 	privs = { settime = true },
 	func = function(caller_name, param)
 		local target, value = parse_args(caller_name, param)
 
-		local player = minetest.get_player_by_name(target)
-		if not player then
-			return false, ("player %s is not connected"):format(target)
-		end
-
 		if value and (value < 0 or value > 1) then
-			return false, "sunlight value must be between 0 and 1 inclusive"
+			return false, S("sunlight value must be between 0 and 1 inclusive")
 		end
 
-		player:override_day_night_ratio(value)
+		local player = minetest.get_player_by_name(target)
+		if player then
+			player:override_day_night_ratio(value)
+		end
 
 		if value then
 			mod_storage:set_string(get_key(caller_name), tostring(value))
@@ -55,7 +55,7 @@ minetest.register_chatcommand("sunlight", {
 			mod_storage:set_string(get_key(caller_name), "")
 		end
 
-		return true, "sunlight level set"
+		return true, S("sunlight level set")
 	end,
 })
 

@@ -6,6 +6,9 @@ on IRC:
 i wrote the following, but unfortunately the parent is cleared immediately after that log, in the c++ code.
 but keeping this cuz it might be used for something similar.
 
+local f = string.format
+local S = debuggery.S
+
 minetest.register_chatcommand("find_bad_attach", {
 	description = "finds luaentities attached to non-existent things",
 	privs = {[debuggery.settings.admin_priv] = true},
@@ -18,14 +21,14 @@ minetest.register_chatcommand("find_bad_attach", {
 				local ent = parent:get_luaentity()
 
 				if not ent then
-					minetest.chat_send_player(name, ("%s @ %s is attached to nonexistent parent"):format(
+					minetest.chat_send_player(name, S("@1 @@ @2 is attached to nonexistent parent",
 						entity.name, minetest.pos_to_string(object:get_pos())
 					))
 				end
 				count = count + 1
 			end
 		end
-		return true, ("found %s objects attached to non-existent parents"):format(count)
+		return true, S("found @1 objects attached to non-existent parents", count)
 	end,
 })
 ]]

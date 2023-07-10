@@ -1,15 +1,18 @@
+local f = string.format
+local S = debuggery.S
+
 minetest.register_chatcommand("memory", {
-	description = 'Get server"s Lua memory usage',
+	description = S("get server's lua memory usage"),
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, param)
-		minetest.chat_send_player(name, ("Lua is using %uMB out of 1024"):format(collectgarbage("count") / 1024))
+		return true, S("Lua is using @1MiB", f("%.1f", collectgarbage("count") / 1024))
 	end,
 })
 
 local registered = {}
 
 minetest.register_chatcommand("memory_toggle", {
-	description = 'Get server"s Lua memory usage periodically',
+	description = "get server's lua memory usage periodically",
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, param)
 		if registered[name] then
@@ -20,7 +23,7 @@ minetest.register_chatcommand("memory_toggle", {
 	end,
 })
 
-local period = 1
+local period = 15
 local elapsed = 0
 
 minetest.register_globalstep(function(dtime)
@@ -31,6 +34,6 @@ minetest.register_globalstep(function(dtime)
 	elapsed = 0
 	local amt = collectgarbage("count") / 1024
 	for name in pairs(registered) do
-		minetest.chat_send_player(name, ("Lua is using %uMB out of 1024"):format(amt))
+		minetest.chat_send_player(name, S("Lua is using @1MiB", f("%.1f", amt)))
 	end
 end)
