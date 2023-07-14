@@ -15,9 +15,9 @@ dependencies:
 
   detaches the target from its parent.
 
-* `/count_objects`
+* `/count_entities`
 
-  prints counts of all types of objects currently active.
+  prints counts of all types of entities currently active.
   example output:
   ```
   petz:calf = 5

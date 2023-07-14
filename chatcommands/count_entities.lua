@@ -3,7 +3,7 @@ local S = debuggery.S
 
 local pairs_by_key = futil.table.pairs_by_key
 
-local function count_object(player_name, filter)
+local function count_entities(player_name, filter)
 	local ret = {}
 	local total = 0
 
@@ -51,8 +51,8 @@ local function count_object(player_name, filter)
 	minetest.chat_send_player(player_name, S("total = @1", tostring(total)))
 end
 
-minetest.register_chatcommand("count_objects", {
-	description = S("get counts of all objects active on the server"),
+minetest.register_chatcommand("count_entities", {
+	description = S("get counts of all active entities on the server"),
 	params = S("[<filter>]"),
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(name, filter)
@@ -60,7 +60,7 @@ minetest.register_chatcommand("count_objects", {
 		if not futil.is_valid_regex(filter) then
 			return false, S("invalid filter, please supply a valid lua regular expression")
 		end
-		count_object(name, filter)
+		count_entities(name, filter)
 		return true
 	end,
 })
