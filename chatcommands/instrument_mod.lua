@@ -23,7 +23,7 @@ local function instrument(name, value, _cache)
 			end
 			local begin = clock()
 			local rvs = { value(...) }
-			total_elapsed[name] = (total_elapsed[name] or 0) + clock() - begin
+			total_elapsed[name] = (total_elapsed[name] or 0) + (clock() - begin) * 1e6
 			total_calls[name] = (total_calls[name] or 0) + 1
 			if s.instrument_log_every_call then
 				debuggery.log("action", "%s(...) -> %s", name, dump(rvs))
@@ -117,7 +117,7 @@ futil.register_globalstep({
 		last_call = now
 
 		for name, num_calls in pairs_by_key(total_calls) do
-			local te = total_elapsed[name]
+			local te = math.round(total_elapsed[name])
 
 			log(log_level, f("[instrument_mod] %s was called %s times, used %s us", name, num_calls, te))
 		end
