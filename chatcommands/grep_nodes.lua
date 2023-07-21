@@ -91,7 +91,7 @@ minetest.register_chatcommand("/grep_nodes", {
 			end)
 		end
 
-		local elapsed = minetest.get_us_time() - start
+		local elapsed = (minetest.get_us_time() - start) / 1e6
 		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", tostring(#chunks), tostring(elapsed))
 	end,
 })
@@ -157,7 +157,7 @@ minetest.register_chatcommand("/mark_nodes", {
 			end)
 		end
 
-		local elapsed = minetest.get_us_time() - start
+		local elapsed = (minetest.get_us_time() - start) / 1e6
 		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", tostring(#chunks), tostring(elapsed))
 	end,
 })

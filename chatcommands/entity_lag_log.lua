@@ -12,7 +12,7 @@ local function make_logger(name, old_on_step)
 	return function(self, dtime, moveresult)
 		local start = get_us_time()
 		local rv = old_on_step(self, dtime, moveresult)
-		local elapsed = (get_us_time() - start) * 1e6
+		local elapsed = get_us_time() - start
 		if elapsed > log_threshold and self.object then
 			log("warning", "%s @ %s's on_step took %s us", name, p2s(v_round(self.object:get_pos())), elapsed)
 		end
