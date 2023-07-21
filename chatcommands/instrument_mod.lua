@@ -1,7 +1,7 @@
 local f = string.format
 local S = debuggery.S
 
-local clock = os.clock
+local get_us_time = minetest.get_us_time
 local log = minetest.log
 local log_level = minetest.settings:get("debug_log_level") or "action"
 
@@ -21,9 +21,9 @@ local function instrument(name, value, _cache)
 			if s.instrument_log_every_call then
 				debuggery.log("action", "%s(%s)", name, dump({ ... }))
 			end
-			local begin = clock()
+			local begin = get_us_time()
 			local rvs = { value(...) }
-			total_elapsed[name] = (total_elapsed[name] or 0) + (clock() - begin) * 1e6
+			total_elapsed[name] = (total_elapsed[name] or 0) + (get_us_time() - begin)
 			total_calls[name] = (total_calls[name] or 0) + 1
 			if s.instrument_log_every_call then
 				debuggery.log("action", "%s(...) -> %s", name, dump(rvs))
@@ -106,13 +106,13 @@ futil.register_globalstep({
 	period = s.instrumentation_report_interval,
 	catchup = false,
 	func = function()
-		if num_instrumented == 0 then
+		if futil.table.is_empty(total_calls) then
 			return
 		end
-		local now = clock()
+		local now = get_us_time()
 		if last_call then
 			local elapsed = now - last_call
-			log(log_level, f("[instrument_mod] in %ss,", elapsed))
+			log(log_level, f("[instrument_mod] in %sus,", elapsed))
 		end
 		last_call = now
 
@@ -136,3 +136,5 @@ minetest.register_on_mods_loaded(function()
 		instrument_mod(mod)
 	end
 end)
+
+debuggery.instrument = instrument
