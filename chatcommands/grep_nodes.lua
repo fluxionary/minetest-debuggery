@@ -51,7 +51,7 @@ minetest.register_chatcommand("/grep_nodes", {
 	description = S("search for nodes"),
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(player_name, params)
-		local start = os.clock()
+		local start = minetest.get_us_time()
 		local limit, pattern = params:match("^%s*(%d+)%s+(%S+)%s*")
 		limit = tonumber(limit)
 		if not (limit and pattern) then
@@ -91,7 +91,7 @@ minetest.register_chatcommand("/grep_nodes", {
 			end)
 		end
 
-		local elapsed = os.clock() - start
+		local elapsed = minetest.get_us_time() - start
 		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", tostring(#chunks), tostring(elapsed))
 	end,
 })
@@ -104,7 +104,7 @@ minetest.register_chatcommand("/mark_nodes", {
 	description = S("highlight matching nodes via HUD waypoints"),
 	privs = { [debuggery.settings.admin_priv] = true },
 	func = function(player_name, params)
-		local start = os.clock()
+		local start = minetest.get_us_time()
 
 		local player = minetest.get_player_by_name(player_name)
 		if not player then
@@ -157,7 +157,7 @@ minetest.register_chatcommand("/mark_nodes", {
 			end)
 		end
 
-		local elapsed = os.clock() - start
+		local elapsed = minetest.get_us_time() - start
 		return true, S("[grep_nodes] broke job into @1 mapblocks, took @2s", tostring(#chunks), tostring(elapsed))
 	end,
 })

@@ -1,4 +1,4 @@
-local clock = os.clock
+local get_us_time = minetest.get_us_time
 local p2s = minetest.pos_to_string
 local v_round = vector.round
 
@@ -10,9 +10,9 @@ local old_on_steps
 
 local function make_logger(name, old_on_step)
 	return function(self, dtime, moveresult)
-		local start = clock()
+		local start = get_us_time()
 		local rv = old_on_step(self, dtime, moveresult)
-		local elapsed = (clock() - start) * 1e6
+		local elapsed = (get_us_time() - start) * 1e6
 		if elapsed > log_threshold and self.object then
 			log("warning", "%s @ %s's on_step took %s us", name, p2s(v_round(self.object:get_pos())), elapsed)
 		end
