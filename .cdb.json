@@ -1,0 +1,11 @@
+{
+    "type": "MOD",
+    "name": "debuggery",
+    "title": "debuggery",
+    "license": "LGPL-3.0-or-later",
+    "media_license": "CC-BY-SA-4.0",
+    "repo": "https://github.com/fluxionary/minetest-debuggery.git",
+    "website": "https://github.com/fluxionary/minetest-debuggery",
+    "issue_tracker": "https://github.com/fluxionary/minetest-debuggery/issues",
+    "short_description": "debugging tools for server admins"
+}
