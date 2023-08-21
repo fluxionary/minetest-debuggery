@@ -2,7 +2,7 @@ if not (debuggery.has.areas or debuggery.has.worldedit) then
 	return
 end
 
-local f = string.format()
+local f = string.format
 local S = debuggery.S
 local get_bounds = debuggery.util.get_bounds
 
