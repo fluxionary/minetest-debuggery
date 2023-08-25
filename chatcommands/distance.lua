@@ -14,6 +14,6 @@ minetest.register_chatcommand("/distance", {
 			return false, S("please mark two points using either areas or worldedit")
 		end
 
-		return true, f(".1f", vector.distance(pos1, pos2))
+		return true, f("%.1f", vector.distance(pos1, pos2))
 	end,
 })
