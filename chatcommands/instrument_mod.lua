@@ -17,6 +17,7 @@ local num_instrumented = 0
 
 local function instrument(name, value, _cache)
 	if type(value) == "function" then
+		debuggery.log("action", "instrumenting %q", name)
 		return function(...)
 			if s.instrument_log_every_call then
 				debuggery.log("action", "%s(%s)", name, dump({ ... }))
