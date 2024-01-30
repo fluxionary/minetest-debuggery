@@ -2,7 +2,7 @@ local f = string.format
 local S = debuggery.S
 
 local get_us_time = minetest.get_us_time
-local log = minetest.log
+local log = debuggery.log
 local log_level = minetest.settings:get("debug_log_level") or "action"
 
 local pairs_by_key = futil.table.pairs_by_key
@@ -17,17 +17,17 @@ local num_instrumented = 0
 
 local function instrument(name, value, _cache)
 	if type(value) == "function" then
-		debuggery.log("action", "instrumenting %q", name)
+		log("action", "instrumenting %q", name)
 		return function(...)
 			if s.instrument_log_every_call then
-				debuggery.log("action", "%s(%s)", name, dump({ ... }))
+				log("action", "%s(%s)", name, dump({ ... }))
 			end
 			local begin = get_us_time()
 			local rvs = { value(...) }
 			total_elapsed[name] = (total_elapsed[name] or 0) + (get_us_time() - begin)
 			total_calls[name] = (total_calls[name] or 0) + 1
 			if s.instrument_log_every_call then
-				debuggery.log("action", "%s(...) -> %s", name, dump(rvs))
+				log("action", "%s(...) -> %s", name, dump(rvs))
 			end
 			return unpack(rvs)
 		end
@@ -58,14 +58,14 @@ local function instrument(name, value, _cache)
 end
 
 local function instrument_mod(mod)
-	debuggery.log("action", "instrumenting %s", mod)
+	log("action", "instrumenting %s", mod)
 	old_values[mod] = _G[mod]
 	_G[mod] = instrument(mod, _G[mod])
 	num_instrumented = num_instrumented + 1
 end
 
 local function uninstrument_mod(mod)
-	debuggery.log("action", "uninstrumenting %s", mod)
+	log("action", "uninstrumenting %s", mod)
 	_G[mod] = old_values[mod]
 	old_values[mod] = nil
 	num_instrumented = num_instrumented - 1
@@ -113,14 +113,14 @@ futil.register_globalstep({
 		local now = get_us_time()
 		if last_call then
 			local elapsed = now - last_call
-			log(log_level, f("[instrument_mod] in %sus,", elapsed))
+			log(log_level, "[instrument_mod] in %sus,", elapsed)
 		end
 		last_call = now
 
 		for name, num_calls in pairs_by_key(total_calls) do
 			local te = math.round(total_elapsed[name])
 
-			log(log_level, f("[instrument_mod] %s was called %s times, used %s us", name, num_calls, te))
+			log(log_level, "[instrument_mod] %s was called %s times, used %s us", name, num_calls, te)
 		end
 
 		total_calls = {}
