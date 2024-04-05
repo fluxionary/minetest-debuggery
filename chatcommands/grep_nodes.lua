@@ -26,17 +26,16 @@ end
 
 local function iterate_in_bounds(pos1, pos2, names_by_id, limit)
 	return coroutine.wrap(function()
-		local vm = minetest.get_voxel_manip()
-		local emerged_pos1, emerged_pos2 = vm:read_from_map(pos1, pos2)
-		local area = VoxelArea:new({ MinEdge = emerged_pos1, MaxEdge = emerged_pos2 })
+		local vm = VoxelManip(pos1, pos2)
+		local va = VoxelArea(vm:get_emerged_area())
 		local data = vm:get_data()
 
 		local count_found = 0
-		for i in area:iterp(pos1, pos2) do
+		for i in va:iterp(pos1, pos2) do
 			local itemstring = names_by_id[data[i]]
 			if itemstring then
 				count_found = count_found + 1
-				local pos = area:position(i)
+				local pos = va:position(i)
 				coroutine.yield(itemstring, pos)
 				if count_found == limit then
 					break

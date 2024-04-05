@@ -1,6 +1,7 @@
 debuggery.dofile("chatcommands", "attach_detach")
 debuggery.dofile("chatcommands", "better_rollback")
 debuggery.dofile("chatcommands", "clone_wielded")
+debuggery.dofile("chatcommands", "count")
 debuggery.dofile("chatcommands", "count_entities")
 debuggery.dofile("chatcommands", "distance")
 debuggery.dofile("chatcommands", "entity_lag_log")
